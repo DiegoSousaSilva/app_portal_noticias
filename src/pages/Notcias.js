@@ -6,7 +6,7 @@ export default function Noticias({navigation}) {
   return (
     <View>
       <StatusBar hidden/>
-      <Text>Home</Text>
+      <Text>Noticias</Text>
       <Button 
         title="Ir para Home"
         onPress={()=> navigation.navigate('Portal')}
