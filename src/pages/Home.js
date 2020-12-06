@@ -2,9 +2,8 @@ import React,{useState, useEffect} from 'react';
 import { Image, ImageBackground, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import {db} from '../../firebase';
-
-const image2 ={ uri: 'https://uploads.jovemnerd.com.br/wp-content/uploads/2020/02/one-piece-manga-adiado.jpg'};
-const image = require('../assets/onepiecenoticia.jpg');
+import {createStackNavigator} from '@react-navigation/stack';
+import Noticias from '../pages/Notcias';
 
 
 export default function Home({navigation}) {
@@ -17,22 +16,25 @@ export default function Home({navigation}) {
         return {info:doc.data()}
       }));
     })
-  }, [])
+  }, []);
 
-  return (
-    <View style={{flex:1}}>
-      <View style={{flex: 0.3}}>
-        <ScrollView horizontal contentContainerStyle={{width:'200%', height: 150}} style={{flex:1}}>
+  const Home =()=>{
+    return(
+      <View style={{flex:1}}>
+      <View style={{flex:.4}}>
+        <ScrollView horizontal contentContainerStyle={{width:'200%', height: 200}} >
         {
           noticias.map((val, index)=>{
             if(index<2){
               return(
               <ImageBackground key={index} source={{uri: val.info.img}} style={styles.imageStyle}>
+              
                 <TouchableOpacity 
                   onPress={()=> navigation.navigate('Noticias',{
                     titulo: val.info.titulo,
                     conteudo: val.info.conteudo,
                     img: val.info.img,
+                    id: index,
                   })} 
                   style={styles.touchableStyle}>
                   <Text style={styles.txtImage}>{val.info.titulo}</Text>
@@ -43,19 +45,20 @@ export default function Home({navigation}) {
           
         }
         </ScrollView>
+    </View>
     
-      </View>
-      <View style={{flex:0.7, padding:20}}>
+      <View style={{flex:.7, padding:10}}>
         <View style={{
           width: 50,
           height: 2, 
           backgroundColor: '#069', 
           position:"absolute",
           left:40, 
-          top:40 }}> 
+          top:40,
+          marginBottom: 8 }}> 
         </View> 
         <Text> Mais Notícias </Text>
-        <ScrollView contentContainerStyle={{padding:20}} style={{flex:1}}>
+        <ScrollView contentContainerStyle={{padding:20}} >
         {
           noticias.map((val, index)=>{
             if(index>=2){
@@ -67,6 +70,7 @@ export default function Home({navigation}) {
                     titulo: val.info.titulo,
                     conteudo:val.info.conteudo,
                     img: val.info.img,
+                    id: index,
                   })}   
                 >
                   <Image 
@@ -85,6 +89,18 @@ export default function Home({navigation}) {
       </View>
       <StatusBar hidden/>
     </View>
+    )
+  }
+
+  const Stack = createStackNavigator();
+  return (
+    
+      <Stack.Navigator>
+        <Stack.Screen name="Portal" component={Home} />
+        <Stack.Screen name="Noticias" component={Noticias} />
+      </Stack.Navigator>
+
+    
   )
 }
 
@@ -93,16 +109,21 @@ const styles = StyleSheet.create({
     flex:1,
     resizeMode:'cover',
     justifyContent: 'flex-end',
-    width: '100%'
+    width: '100%',
+    height:200,
+
   },
   txtImage:{
     color: '#fff',
-    fontSize: 18
+    fontSize: 18,
+    padding: 6,
+    position: 'absolute',
+    bottom:0
   },
   touchableStyle:{
     width:'100%', 
     height:'100%', 
     backgroundColor: 'rgba(0,0,0,0.5)', 
-    justifyContent:'flex-end'
+    //justifyContent:'flex-end'
   }
 })

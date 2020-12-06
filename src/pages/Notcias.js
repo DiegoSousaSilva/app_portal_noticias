@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, ScrollView, TouchableOpacity, View, ImageBackground} from 'react-native';
 import { StatusBar } from 'expo-status-bar';
+import {db} from '../../firebase';
 
 
 export default function Noticias({route, navigation}) {
@@ -8,12 +9,22 @@ export default function Noticias({route, navigation}) {
   return (
     <View style={styles.container}>
        <ImageBackground style={styles.imageStyle} source={{uri: image}} ></ImageBackground>
-      <ScrollView contentContainerStyle={{width:'100%', height: 250}} >
+      <ScrollView contentContainerStyle={{width:'100%'}} >
         <StatusBar hidden/>
         <Text style={styles.titleText}>{route.params.titulo}</Text>
         <Text style={styles.conteudoText}>{route.params.conteudo}</Text>
 
       </ScrollView>
+
+      <TouchableOpacity 
+        style={{position: 'absolute', bottom: 0, right:0}}
+        onPress={()=> {
+         // let deleteDoc = db.collection('noticias').doc(route.params.id).delete();
+        }}
+      >
+        <Text>DELETAR</Text>
+      </TouchableOpacity>
+
       <TouchableOpacity 
         style={{position: 'absolute', bottom: 0}}
         onPress={()=> navigation.navigate('Portal')}
