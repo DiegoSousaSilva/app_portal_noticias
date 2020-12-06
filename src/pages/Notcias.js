@@ -7,9 +7,9 @@ export default function Noticias({route, navigation}) {
   const image = route.params.img;
   return (
     <View style={styles.container}>
+       <ImageBackground style={styles.imageStyle} source={{uri: image}} ></ImageBackground>
       <ScrollView contentContainerStyle={{width:'100%', height: 250}} >
         <StatusBar hidden/>
-        <ImageBackground style={styles.imageStyle} source={image} ></ImageBackground>
         <Text style={styles.titleText}>{route.params.titulo}</Text>
         <Text style={styles.conteudoText}>{route.params.conteudo}</Text>
 
